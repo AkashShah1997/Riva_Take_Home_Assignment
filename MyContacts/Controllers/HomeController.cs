@@ -19,12 +19,6 @@ namespace MyContacts.Controllers
                 .OrderBy(c => c.LastName)
                 .ToList();
 
-            // Ensure category object is populated manually
-            foreach (var contact in contacts)
-            {
-                contact.Category = _service.GetCategory(contact.CategoryId.Value);
-            }
-
             return View(contacts);
         }
     }

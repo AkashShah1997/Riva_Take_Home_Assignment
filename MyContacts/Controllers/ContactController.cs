@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using MyContacts.Models;
 using MyContacts.Services;
 
@@ -20,21 +21,19 @@ namespace MyContacts.Controllers
         }
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult AddEdit(int? id)
         {
-            ViewBag.Categories = _service.GetCategories();
-            ViewBag.Action = "Add";
-            return View("AddEdit", new Contact());
-        }
+            if (id == null || id == 0)
+            {
+                ViewBag.Action = "Add";
+                return PartialView("AddEdit", new Contact());
+            }
 
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var contact = _service.GetContact(id);
+            var contact = _service.GetContact(id.Value);
             if (contact == null) return NotFound();
-            ViewBag.Categories = _service.GetCategories();
+
             ViewBag.Action = "Edit";
-            return View("AddEdit", contact);
+            return PartialView("AddEdit", contact);
         }
 
         [HttpPost]
@@ -47,36 +46,45 @@ namespace MyContacts.Controllers
                 else
                     _service.UpdateContact(contact);
 
-                return RedirectToAction("Index");
+                var contacts = _service.GetAllContacts();
+                return PartialView("Details", contacts);
             }
 
-            ViewBag.Categories = _service.GetCategories();
-            return View("AddEdit", contact);
-        }
-
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            var contact = _service.GetContact(id);
-            return contact == null ? NotFound() : View(contact);
+            ViewBag.Action = contact.ContactId == 0 ? "Add" : "Edit";
+            return PartialView("AddEdit", contact);
         }
 
         [HttpPost]
-        public IActionResult Delete(Contact contact)
+        public IActionResult Delete(int id)
         {
-            _service.DeleteContact(contact.ContactId);
-            return RedirectToAction("Index");
+            _service.DeleteContact(id);
+            var contacts = _service.GetAllContacts();
+            return PartialView("Details", contacts);
         }
 
         [HttpGet]
         public IActionResult Details(int id)
         {
             var contact = _service.GetContact(id);
-            if (contact != null)
-            {
-                contact.Category = _service.GetCategory(contact.CategoryId.Value);
-            }
             return contact == null ? NotFound() : View(contact);
         }
+
+        [HttpGet]
+        public IActionResult Search(string query)
+        {
+            var results = _service.GetAllContacts();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                query = query.ToLower();
+                results = results.Where(c =>
+                    (!string.IsNullOrEmpty(c.FirstName) && c.FirstName.ToLower().Contains(query)) ||
+                    (!string.IsNullOrEmpty(c.LastName) && c.LastName.ToLower().Contains(query))
+                ).ToList();
+            }
+
+            return PartialView("Details", results);
+        }
+
     }
 }

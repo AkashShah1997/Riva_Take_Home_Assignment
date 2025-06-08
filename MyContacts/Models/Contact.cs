@@ -20,14 +20,6 @@ namespace MyContacts.Models
         [Required(ErrorMessage = "Please enter an email")]
         public string Email { get; set; } = null!;
 
-        //FK for the Category table
-        [Required(ErrorMessage ="Please select a category")]
-        public int? CategoryId { get; set; }
-
-        //Navigation property
-        [ValidateNever]
-        public Category Category { get; set; } = null!;
-
         public DateTime DateAdded { get; set; }
 
         //Read only property that returns the full name of the contact
