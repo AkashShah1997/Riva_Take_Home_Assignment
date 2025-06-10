@@ -1,0 +1,19 @@
+﻿@model List<MyContacts.Models.Contact>
+
+@foreach (var contact in Model)
+{
+    <tr>
+        <td>@contact.FirstName</td>
+        <td>@contact.LastName</td>
+        <td>@contact.Email</td>
+        <td>@contact.PhoneNumber</td>
+        <td class="text-center">
+            <button class="btn btn-sm btn-primary edit-contact" data-id="@contact.ContactId">
+                <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-sm btn-danger delete-contact" data-id="@contact.ContactId">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        </td>
+    </tr>
+}
