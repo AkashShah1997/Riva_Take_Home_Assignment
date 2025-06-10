@@ -31,34 +31,21 @@ A simple ASP.NET Core MVC application to manage contacts. It supports basic CRUD
 git clone https://github.com/akashshah1997/riva_take_home_assignment.git
 cd riva_take_home_assignment
 
-markdown
-Copy
-Edit
 
 2. Open the solution (`ContactApp.sln`) in Visual Studio or open the folder in VS Code.
 
 3. Build the solution:
 dotnet build
 
-markdown
-Copy
-Edit
 
 4. Run the application:
 dotnet run --project MyContacts
-
-css
-Copy
-Edit
 
 5. Open a browser and go to:
 http://localhost:5000
 or
 https://localhost:5001
 
-sql
-Copy
-Edit
 
 ## Running Tests
 
@@ -66,9 +53,6 @@ Unit tests are located in the `MyContacts.Tests` project. To execute:
 
 dotnet test
 
-markdown
-Copy
-Edit
 
 Ensure the test project references xUnit, Moq, and the main project.
 
